@@ -1,0 +1,241 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'freight big pro';
+}
+
+html,body{
+    height: 100%;
+    width: 100%;
+}
+nav{
+    height: 4vw;
+    width: 100%;
+    background-color: rgb(254, 254, 254);
+    position: relative;
+}
+.input {
+    width: 100%;
+    max-width: 200px;
+    height: 35px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+  }
+  
+  .input:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+  }
+  
+  .input:active {
+    transform: scale(0.95);
+  }
+  
+  .input:focus {
+    border: 2px solid grey;
+  }
+  #context{
+    padding-top: 1vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-self: flex-start;
+  }
+  #contents{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+#contents a{
+    text-decoration: none;
+    color: black;
+    font-size: 1.6vw;
+    gap: 1.8vw;
+    padding-left: 1.8vw;
+}
+#submit{
+    font-family: monospace;
+    background-color: #ffeadf;
+    color: #753f01;
+    border: none;
+    border-radius: 8px;
+    width: 100px;
+    height: 35px;
+    transition: .3s;
+    font-size: 1vw;
+  }
+  #header{
+    width: 100%;
+    height: 300px;
+    /* background-color: wheat; */
+  }
+  #page1{
+    width: 100%;
+    height: 100vh;
+  }
+  #page1 #header{
+    padding-left: 20vw;
+    padding-top: 1.5vw;
+
+  }
+  #page1 #header #cont{
+    display: flex;
+  }
+  #page1 #header h1{
+    font-weight: 900;
+
+  }
+  #page1 #header h2{
+    font-weight: 100;
+  }
+  .visit-btn {
+    background-color: #ff4500;
+    color: #fff;
+    border-radius: 1px;
+    margin-left: 40vw;
+    font-size: 1.3vw;
+    width: 120px;
+    height: 45px;
+}
+.upvote-btn {
+  background-color: #fff;
+  color: #ff4500;
+  border: 1px solid #ff4500;
+  width: 150px;
+  font-size: 1.3vw;
+  height: 45px;
+  
+}
+.product-details .offer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 20vw;
+  font-size: 1.5vw;
+  gap: 1vw;
+}
+
+.product-details .offer .gift-icon {
+  font-size: 24px;
+  color: #ff4500;
+  margin-right: 5px;
+}
+
+.product-details p {
+  margin: 0 0 10px;
+  margin-left: 20vw;
+}
+
+.product-details ul {
+  padding-left: 20px;
+  margin-left: 20vw;
+}
+
+.product-details ul li {
+  margin-bottom: 5px;
+}
+.tags {
+  margin: 20px 0;
+  margin-left: 20vw;
+}
+.tags h2{
+  font-weight: 400;
+}
+
+.tags span {
+  background-color: #e9ecef;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+@media (max-width:600px) {
+  nav{
+    height: 12vw;
+    width: 100%;
+    background-color: rgb(254, 254, 254);
+    position: relative;
+}
+.input {
+  width: 100%;
+  max-width: 60px;
+  height: 15px;
+  border-radius: 4px;
+}
+#contents a{
+  text-decoration: none;
+  color: black;
+  font-size: 2.8vw;
+  gap: 1.8vw;
+  padding-left: 1.8vw;
+}
+#submit{
+  font-family: monospace;
+  background-color: #ffeadf;
+  color: #753f01;
+  border-radius: 3px;
+  width: 50px;
+  height: 15px;
+  transition: .3s;
+  font-size: 2.5vw;
+  margin-top: 1.3vw;
+}
+#page1 #header{
+  padding-left: 2vw;
+
+}
+.visit-btn {
+  background-color: #ff4500;
+  color: #fff;
+  border-radius: 4px;
+  margin-left: 30vw;
+  font-size: 4vw;
+  width: 120px;
+  height: 35px;
+}
+.upvote-btn {
+background-color: #fff;
+color: #ff4500;
+border: 1px solid #ff4500;
+width: 150px;
+font-size: 4vw;
+height: 35px;
+
+}
+.product-details .offer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 2vw;
+  font-size: 5vw;
+  gap: 1vw;
+}
+
+.product-details .offer .gift-icon {
+  font-size: 24px;
+  color: #ff4500;
+  margin-right: 5px;
+}
+
+.product-details p {
+  margin: 0 0 10px;
+  margin-left: 2vw;
+}
+
+.product-details ul {
+  padding-left: 20px;
+  margin-left: 2vw;
+}
+
+.product-details ul li {
+  margin-bottom: 5px;
+}
+.tags {
+  margin: 20px 0;
+  margin-left: 2vw;
+}
+}
