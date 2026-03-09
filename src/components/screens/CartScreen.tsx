@@ -3,10 +3,10 @@ import { Minus, Plus, Trash2, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 
 export default function CartScreen() {
-    const { cartItems, pricing, updateQuantity, nextStep } = useCheckoutStore();
+    const { cartItems, shipping_fee, discount_applied, updateQuantity, nextStep } = useCheckoutStore();
 
     const subtotal = cartItems.reduce((acc, item) => acc + (item.product_price * item.quantity), 0);
-    const total = subtotal + pricing.shipping_fee - pricing.discount_applied;
+    const total = subtotal + shipping_fee - discount_applied;
 
     if (cartItems.length === 0) {
         return (
@@ -57,7 +57,7 @@ export default function CartScreen() {
                                             <Plus size={14} />
                                         </button>
                                     </div>
-                                    <span className="font-bold text-lg text-emerald-700">₹{item.product_price * item.quantity}</span>
+                                    <span className="font-bold text-lg text-emerald-700">${item.product_price * item.quantity}</span>
                                 </div>
                             </div>
                         </div>
@@ -73,22 +73,22 @@ export default function CartScreen() {
                     <div className="space-y-4 text-sm mb-6">
                         <div className="flex justify-between text-gray-500">
                             <span>Subtotal</span>
-                            <span className="text-gray-900 font-medium">₹{subtotal}</span>
+                            <span className="text-gray-900 font-medium">${subtotal}</span>
                         </div>
                         <div className="flex justify-between text-gray-500">
                             <span>Shipping</span>
-                            <span className="text-gray-900 font-medium">₹{pricing.shipping_fee}</span>
+                            <span className="text-gray-900 font-medium">${shipping_fee}</span>
                         </div>
-                        {pricing.discount_applied > 0 && (
+                        {discount_applied > 0 && (
                             <div className="flex justify-between text-emerald-600">
                                 <span>Discount</span>
-                                <span className="font-medium">-₹{pricing.discount_applied}</span>
+                                <span className="font-medium">-${discount_applied}</span>
                             </div>
                         )}
                         <div className="h-px bg-gray-100 my-4" />
                         <div className="flex justify-between text-lg font-bold text-gray-900">
                             <span>Total</span>
-                            <span>₹{total}</span>
+                            <span>${total}</span>
                         </div>
                     </div>
 

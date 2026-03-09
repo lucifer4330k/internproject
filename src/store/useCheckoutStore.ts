@@ -8,11 +8,6 @@ export type CartItem = {
     image: string;
 };
 
-export type Pricing = {
-    shipping_fee: number;
-    discount_applied: number;
-};
-
 export type Address = {
     fullName: string;
     email: string;
@@ -24,10 +19,12 @@ export type Address = {
 
 interface CheckoutState {
     cartItems: CartItem[];
-    pricing: Pricing;
+    shipping_fee: number;
+    discount_applied: number;
     address: Address | null;
     currentStep: number;
-    setCartData: (items: CartItem[], pricing: Pricing) => void;
+    // Update the setter to take the flat values
+    setCartData: (items: CartItem[], shipping: number, discount: number) => void;
     updateQuantity: (id: number, delta: number) => void;
     setAddress: (address: Address) => void;
     setStep: (step: number) => void;
@@ -37,10 +34,15 @@ interface CheckoutState {
 
 export const useCheckoutStore = create<CheckoutState>((set) => ({
     cartItems: [],
-    pricing: { shipping_fee: 0, discount_applied: 0 },
+    shipping_fee: 0,
+    discount_applied: 0,
     address: null,
-    currentStep: 1, // 1: Cart, 2: Address, 3: Payment, 4: Success
-    setCartData: (items, pricing) => set({ cartItems: items, pricing }),
+    currentStep: 1,
+    setCartData: (items, shipping, discount) => set({
+        cartItems: items,
+        shipping_fee: shipping,
+        discount_applied: discount
+    }),
     updateQuantity: (id, delta) => set((state) => ({
         cartItems: state.cartItems.map(item =>
             item.product_id === id

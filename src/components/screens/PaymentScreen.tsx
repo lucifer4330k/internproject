@@ -4,11 +4,11 @@ import { ArrowLeft, CreditCard, Lock, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 
 export default function PaymentScreen() {
-    const { cartItems, pricing, address, prevStep, nextStep } = useCheckoutStore();
+    const { cartItems, shipping_fee, discount_applied, address, prevStep, nextStep } = useCheckoutStore();
     const [isProcessing, setIsProcessing] = useState(false);
 
     const subtotal = cartItems.reduce((acc, item) => acc + (item.product_price * item.quantity), 0);
-    const total = subtotal + pricing.shipping_fee - pricing.discount_applied;
+    const total = subtotal + shipping_fee - discount_applied;
 
     const handlePayment = () => {
         setIsProcessing(true);
@@ -84,7 +84,7 @@ export default function PaymentScreen() {
                                     <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                                 </div>
                                 <div className="text-sm font-semibold text-gray-900">
-                                    ₹{item.product_price * item.quantity}
+                                    ${item.product_price * item.quantity}
                                 </div>
                             </div>
                         ))}
@@ -95,16 +95,16 @@ export default function PaymentScreen() {
                     <div className="space-y-4 text-sm mb-6">
                         <div className="flex justify-between text-gray-500">
                             <span>Subtotal</span>
-                            <span className="text-gray-900 font-medium">₹{subtotal}</span>
+                            <span className="text-gray-900 font-medium">${subtotal}</span>
                         </div>
                         <div className="flex justify-between text-gray-500">
                             <span>Shipping</span>
-                            <span className="text-gray-900 font-medium">₹{pricing.shipping_fee}</span>
+                            <span className="text-gray-900 font-medium">${shipping_fee}</span>
                         </div>
                         <div className="h-px bg-gray-100 my-4" />
                         <div className="flex justify-between text-xl font-bold text-gray-900">
                             <span>Total Pay</span>
-                            <span>₹{total}</span>
+                            <span>${total}</span>
                         </div>
                     </div>
 
@@ -121,7 +121,7 @@ export default function PaymentScreen() {
                         ) : (
                             <>
                                 <Lock size={18} />
-                                Pay ₹{total} Securely
+                                Pay ${total} Securely
                             </>
                         )}
                     </button>
