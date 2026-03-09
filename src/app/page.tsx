@@ -22,10 +22,8 @@ async function getCheckoutData() {
         image: "https://images.unsplash.com/photo-1610419993549-743fb3f478a8?q=80&w=2864&auto=format&fit=crop"
       }
     ],
-    pricing: {
-      shipping_fee: 50,
-      discount_applied: 0
-    }
+    shipping_fee: 50,
+    discount_applied: 0
   };
 }
 

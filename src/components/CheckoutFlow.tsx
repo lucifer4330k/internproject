@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useCheckoutStore, CartItem, Pricing } from '@/store/useCheckoutStore';
+import { useCheckoutStore, CartItem } from '@/store/useCheckoutStore';
 import { AnimatePresence, motion } from 'framer-motion';
 
 // Screens
@@ -17,7 +17,8 @@ import Footer from './Footer';
 interface CheckoutFlowProps {
     initialData: {
         cartItems: CartItem[];
-        pricing: Pricing;
+        shipping_fee: number;
+        discount_applied: number;
     };
 }
 
@@ -27,7 +28,10 @@ export default function CheckoutFlow({ initialData }: CheckoutFlowProps) {
 
     useEffect(() => {
         // Hydrate store with SSR data
-        setCartData(initialData.cartItems, initialData.pricing);
+        setCartData(initialData.cartItems, {
+            shipping_fee: initialData.shipping_fee,
+            discount_applied: initialData.discount_applied
+        });
         setHydrated(true);
     }, [initialData, setCartData]);
 
