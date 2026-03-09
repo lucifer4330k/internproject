@@ -1,7 +1,14 @@
 import CheckoutFlow from '@/components/CheckoutFlow';
 
 async function getCheckoutData() {
-  const res = await fetch('http://localhost:3000/api/checkout', {
+  // Dynamically resolve the absolute URL for the API route.
+  // In production on Vercel, process.env.VERCEL_URL is automatically populated.
+  // We fall back to localhost:3000 for local development.
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
+
+  const res = await fetch(`${baseUrl}/api/checkout`, {
     cache: 'no-store'
   });
 
