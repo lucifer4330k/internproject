@@ -28,10 +28,11 @@ export default function CheckoutFlow({ initialData }: CheckoutFlowProps) {
 
     useEffect(() => {
         // Hydrate store with SSR data
-        setCartData(initialData.cartItems, {
-            shipping_fee: initialData.shipping_fee,
-            discount_applied: initialData.discount_applied
-        });
+        setCartData(
+            initialData.cartItems,
+            initialData.shipping_fee,
+            initialData.discount_applied
+        );
         setHydrated(true);
     }, [initialData, setCartData]);
 
