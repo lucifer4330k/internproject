@@ -7,7 +7,7 @@ export default function SuccessScreen() {
 
     const handleReturnHome = () => {
         // Reset flow entirely
-        setCartData([], { shipping_fee: 0, discount_applied: 0 });
+        setCartData([], 0, 0);
         setStep(1);
         // In a real app this would navigate to '/'
         window.location.reload();
