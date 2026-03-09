@@ -1,22 +1,15 @@
 import CheckoutFlow from '@/components/CheckoutFlow';
 
+import { GET } from './api/checkout/route';
+
 async function getCheckoutData() {
-  // Dynamically resolve the absolute URL for the API route.
-  // In production on Vercel, process.env.VERCEL_URL is automatically populated.
-  // We fall back to localhost:3000 for local development.
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
+  // In Next.js Server Components, fetching absolute URLs to your own API routes 
+  // during build or SSR on Vercel can often cause 500 errors or hangs due to the serverless architecture.
+  // Best practice is to directly call the server logic.
 
-  const res = await fetch(`${baseUrl}/api/checkout`, {
-    cache: 'no-store'
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json();
+  const response = await GET();
+  const data = await response.json();
+  return data;
 }
 
 export default async function Home() {
