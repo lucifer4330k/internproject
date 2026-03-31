@@ -95,18 +95,18 @@ export default function CartScreen() {
             </div>
 
             {/* Sticky Action Footer */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 p-4 sm:p-6 z-50 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)]">
+            <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 p-3 sm:px-6 sm:py-3.5 z-50 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)]">
                 <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
                     <div className="hidden sm:block">
                         <span className="text-gray-500 text-sm font-medium">Order Total</span>
-                        <div className="text-2xl font-bold text-gray-900">${total}</div>
+                        <div className="text-xl font-bold text-gray-900">${total}</div>
                     </div>
                     <button
                         onClick={nextStep}
-                        className="w-full sm:w-auto flex-grow sm:flex-grow-0 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-xl font-bold shadow-md shadow-emerald-200 transition-all flex items-center justify-center gap-2 group text-lg"
+                        className="w-full sm:w-auto flex-grow sm:flex-grow-0 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold shadow-md shadow-emerald-200 transition-all flex items-center justify-center gap-2 group text-base"
                     >
                         Proceed to Checkout
-                        <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                 </div>
             </div>

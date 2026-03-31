@@ -260,24 +260,24 @@ export default function AddressScreen() {
             )}
 
             {/* Sticky Action Footer */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 p-4 sm:p-6 z-[60] shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)]">
+            <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 p-3 sm:px-6 sm:py-3.5 z-[60] shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)]">
                 <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
                     <button
                         onClick={prevStep}
-                        className="h-14 px-6 sm:px-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors font-semibold"
+                        className="h-11 px-5 sm:px-6 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors font-semibold"
                         aria-label="Go back to Cart"
                     >
-                        <ArrowLeft size={20} className="sm:mr-2" />
+                        <ArrowLeft size={18} className="sm:mr-2" />
                         <span className="hidden sm:inline">Back</span>
                     </button>
                     
                     <button
                         onClick={handleNextClick}
                         disabled={!isAddingNew && !selectedAddressId}
-                        className="flex-grow sm:flex-grow-0 sm:w-64 bg-emerald-600 disabled:bg-gray-300 disabled:text-gray-500 hover:bg-emerald-700 text-white px-8 py-4 rounded-xl font-bold shadow-md shadow-emerald-200 disabled:shadow-none transition-all flex items-center justify-center gap-2 group text-lg"
+                        className="flex-grow sm:flex-grow-0 sm:w-64 bg-emerald-600 disabled:bg-gray-300 disabled:text-gray-500 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold shadow-md shadow-emerald-200 disabled:shadow-none transition-all flex items-center justify-center gap-2 group text-base"
                     >
                         {isAddingNew ? (editingAddressId ? 'Save Changes' : 'Save & Continue') : 'Continue to Payment'}
-                        <ArrowRight size={20} className={`${!isAddingNew && !selectedAddressId ? '' : 'group-hover:translate-x-1'} transition-transform`} />
+                        <ArrowRight size={18} className={`${!isAddingNew && !selectedAddressId ? '' : 'group-hover:translate-x-1'} transition-transform`} />
                     </button>
                 </div>
             </div>

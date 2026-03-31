@@ -36,6 +36,14 @@ export default function CheckoutFlow({ initialData }: CheckoutFlowProps) {
                 initialData.shipping_fee,
                 initialData.discount_applied
             );
+        } else {
+            // Hotfix: sync images to replace dying 404 unsplash images with fresh ones seamlessly
+            useCheckoutStore.setState({
+                cartItems: state.cartItems.map(item => {
+                    const freshItem = initialData.cartItems.find(i => i.product_id === item.product_id);
+                    return freshItem ? { ...item, image: freshItem.image } : item;
+                })
+            });
         }
         setHydrated(true);
     }, [initialData, setCartData]);
@@ -60,7 +68,7 @@ export default function CheckoutFlow({ initialData }: CheckoutFlowProps) {
         <>
             {currentStep < 4 && <Header />}
 
-            <div className="flex-grow flex items-center justify-center p-4 pb-32 sm:p-6 sm:pb-36 lg:p-8 lg:pb-36">
+            <div className="flex-grow flex items-center justify-center p-4 pb-24 sm:p-6 sm:pb-24 lg:p-8 lg:pb-24">
                 <div className="w-full max-w-4xl relative">
                     <AnimatePresence mode="wait">
                         <motion.div
