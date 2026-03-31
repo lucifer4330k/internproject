@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { useCheckoutStore } from '@/store/useCheckoutStore';
-import { ArrowLeft, CreditCard, Lock, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CreditCard, Lock, CheckCircle2, Smartphone, Banknote } from 'lucide-react';
 import Image from 'next/image';
+
+const PAYMENT_METHODS = [
+    { id: 'card', name: 'Credit / Debit Card', icon: CreditCard, description: 'Simulated Card Payment' },
+    { id: 'upi', name: 'UPI', icon: Smartphone, description: 'Google Pay, PhonePe, Paytm' },
+    { id: 'cod', name: 'Cash on Delivery', icon: Banknote, description: 'Pay when your order arrives' },
+];
 
 export default function PaymentScreen() {
     const { cartItems, shipping_fee, discount_applied, addresses, selectedAddressId, prevStep, nextStep } = useCheckoutStore();
     const [isProcessing, setIsProcessing] = useState(false);
+    const [selectedMethod, setSelectedMethod] = useState('card');
 
     // Compute active address
     const activeAddress = addresses.find(a => a.id === selectedAddressId) || addresses[0];
@@ -31,23 +38,42 @@ export default function PaymentScreen() {
                         <h2 className="text-2xl font-bold text-gray-900">Payment Method</h2>
                     </div>
 
-                    <div className="border border-emerald-500 rounded-xl p-6 bg-emerald-50/30 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4">
-                            <CheckCircle2 className="text-emerald-500" size={24} />
-                        </div>
-                        <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-emerald-600">
-                                <CreditCard size={20} />
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-gray-900">Simulated Payment</h3>
-                                <p className="text-sm text-gray-500">No real charges will be made</p>
-                            </div>
-                        </div>
-                        <div className="mt-6 flex items-center gap-2 text-sm text-emerald-700 bg-emerald-100/50 p-3 rounded-lg w-fit">
-                            <Lock size={16} />
-                            <span>Payments are secure and encrypted</span>
-                        </div>
+                    <div className="space-y-4">
+                        {PAYMENT_METHODS.map((method) => {
+                            const isSelected = selectedMethod === method.id;
+                            const Icon = method.icon;
+                            return (
+                                <div 
+                                    key={method.id}
+                                    onClick={() => setSelectedMethod(method.id)}
+                                    className={`p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all relative flex items-center gap-4 ${
+                                        isSelected 
+                                        ? 'border-emerald-500 bg-emerald-50/30' 
+                                        : 'border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/10'
+                                    }`}
+                                >
+                                    {isSelected && (
+                                        <div className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-5">
+                                            <CheckCircle2 className="text-emerald-500" size={24} />
+                                        </div>
+                                    )}
+                                    <div className={`w-12 h-12 rounded-full shadow-sm flex items-center justify-center shrink-0 ${
+                                        isSelected ? 'bg-white text-emerald-600' : 'bg-gray-100 text-gray-500'
+                                    }`}>
+                                        <Icon size={20} />
+                                    </div>
+                                    <div className="pr-10">
+                                        <h3 className="font-bold text-gray-900">{method.name}</h3>
+                                        <p className="text-sm text-gray-500 mt-0.5">{method.description}</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <div className="mt-6 flex items-center gap-2 text-sm text-emerald-700 bg-emerald-100/50 p-3 rounded-lg w-fit">
+                        <Lock size={16} />
+                        <span>All payments are secure and encrypted</span>
                     </div>
                 </div>
 
@@ -139,8 +165,17 @@ export default function PaymentScreen() {
                             </>
                         ) : (
                             <>
-                                <Lock size={18} />
-                                Pay ${total} Securely
+                                {selectedMethod === 'cod' ? (
+                                    <>
+                                        <CheckCircle2 size={18} />
+                                        Place Order (COD)
+                                    </>
+                                ) : (
+                                    <>
+                                        <Lock size={18} />
+                                        Pay ${total} Securely
+                                    </>
+                                )}
                             </>
                         )}
                     </button>
