@@ -2,7 +2,7 @@ import { useCheckoutStore, Address } from '@/store/useCheckoutStore';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { ArrowLeft, ArrowRight, Plus, MapPin, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Plus, MapPin, CheckCircle2, Pencil } from 'lucide-react';
 import { useState } from 'react';
 
 const formSchema = z.object({
@@ -19,10 +19,11 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function AddressScreen() {
-    const { addresses, selectedAddressId, addAddress, setSelectedAddress, nextStep, prevStep } = useCheckoutStore();
+    const { addresses, selectedAddressId, addAddress, updateAddress, setSelectedAddress, nextStep, prevStep } = useCheckoutStore();
     
     // Automatically show new address form if no addresses are stored
     const [isAddingNew, setIsAddingNew] = useState(addresses.length === 0);
+    const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -39,14 +40,39 @@ export default function AddressScreen() {
     });
 
     const onSubmit = (data: FormData) => {
-        const newAddress: Address = {
-            id: Date.now().toString(),
-            ...data
-        };
-        addAddress(newAddress);
+        if (editingAddressId) {
+            updateAddress(editingAddressId, data);
+            setEditingAddressId(null);
+        } else {
+            const newAddress: Address = {
+                id: Date.now().toString(),
+                ...data
+            };
+            addAddress(newAddress);
+            // Automatically proceed after saving a brand new address (optional config)
+            nextStep();
+        }
         setIsAddingNew(false);
-        // Automatically proceed after saving a new address
-        nextStep();
+        reset({
+            fullName: '', email: '', phone: '', houseNumber: '', exactLocation: '', pinCode: '', city: '', state: ''
+        });
+    };
+
+    const startEditing = (e: React.MouseEvent, addr: Address) => {
+        e.stopPropagation();
+        setSelectedAddress(addr.id);
+        reset({
+            fullName: addr.fullName,
+            email: addr.email,
+            phone: addr.phone,
+            houseNumber: addr.houseNumber,
+            exactLocation: addr.exactLocation,
+            pinCode: addr.pinCode,
+            city: addr.city,
+            state: addr.state
+        });
+        setEditingAddressId(addr.id);
+        setIsAddingNew(true);
     };
 
     const handleNextClick = () => {
@@ -92,11 +118,20 @@ export default function AddressScreen() {
                                 <div className="flex-grow">
                                     <div className="flex justify-between items-start mb-1">
                                         <h3 className="font-bold text-gray-900">{addr.fullName}</h3>
-                                        {selectedAddressId === addr.id && (
-                                            <CheckCircle2 className="text-emerald-500 shrink-0" size={20} />
-                                        )}
+                                        <div className="flex items-center gap-3">
+                                            <button 
+                                                onClick={(e) => startEditing(e, addr)}
+                                                className="text-gray-400 hover:text-emerald-600 transition-colors shrink-0"
+                                                aria-label="Edit address"
+                                            >
+                                                <Pencil size={18} />
+                                            </button>
+                                            {selectedAddressId === addr.id && (
+                                                <CheckCircle2 className="text-emerald-500 shrink-0" size={20} />
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="text-gray-600 text-sm space-y-1">
+                                    <div className="text-gray-600 text-sm space-y-1 pr-10">
                                         <p>{addr.phone} • {addr.email}</p>
                                         <p>{addr.houseNumber}, {addr.exactLocation}</p>
                                         <p>{addr.city}, {addr.state} {addr.pinCode}</p>
@@ -124,7 +159,10 @@ export default function AddressScreen() {
                             <button 
                                 onClick={() => {
                                     setIsAddingNew(false);
-                                    reset();
+                                    setEditingAddressId(null);
+                                    reset({
+                                        fullName: '', email: '', phone: '', houseNumber: '', exactLocation: '', pinCode: '', city: '', state: ''
+                                    });
                                 }}
                                 className="text-emerald-600 font-medium text-sm hover:underline flex items-center gap-1"
                             >
@@ -238,7 +276,7 @@ export default function AddressScreen() {
                         disabled={!isAddingNew && !selectedAddressId}
                         className="flex-grow sm:flex-grow-0 sm:w-64 bg-emerald-600 disabled:bg-gray-300 disabled:text-gray-500 hover:bg-emerald-700 text-white px-8 py-4 rounded-xl font-bold shadow-md shadow-emerald-200 disabled:shadow-none transition-all flex items-center justify-center gap-2 group text-lg"
                     >
-                        {isAddingNew ? 'Save & Continue' : 'Continue to Payment'}
+                        {isAddingNew ? (editingAddressId ? 'Save Changes' : 'Save & Continue') : 'Continue to Payment'}
                         <ArrowRight size={20} className={`${!isAddingNew && !selectedAddressId ? '' : 'group-hover:translate-x-1'} transition-transform`} />
                     </button>
                 </div>

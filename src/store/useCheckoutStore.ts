@@ -32,6 +32,7 @@ interface CheckoutState {
     setCartData: (items: CartItem[], shipping: number, discount: number) => void;
     updateQuantity: (id: number, delta: number) => void;
     addAddress: (address: Address) => void;
+    updateAddress: (id: string, updatedData: Partial<Address>) => void;
     setSelectedAddress: (id: string | null) => void;
     setStep: (step: number) => void;
     nextStep: () => void;
@@ -64,13 +65,17 @@ export const useCheckoutStore = create<CheckoutState>()(
             })),
 
             addAddress: (address) => set((state) => {
-                // Determine if this address already exists or is an update (optional, simple push here)
-                // For simplicity, we just push it to the list and set it as selected
                 return {
                     addresses: [...state.addresses, address],
                     selectedAddressId: address.id
                 };
             }),
+            
+            updateAddress: (id, updatedData) => set((state) => ({
+                addresses: state.addresses.map(addr => 
+                    addr.id === id ? { ...addr, ...updatedData } : addr
+                )
+            })),
 
             setSelectedAddress: (id) => set({ selectedAddressId: id }),
 
