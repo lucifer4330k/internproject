@@ -27,12 +27,16 @@ export default function CheckoutFlow({ initialData }: CheckoutFlowProps) {
     const [hydrated, setHydrated] = useState(false);
 
     useEffect(() => {
-        // Hydrate store with SSR data
-        setCartData(
-            initialData.cartItems,
-            initialData.shipping_fee,
-            initialData.discount_applied
-        );
+        // Hydrate store with SSR data only if the store isn't already populated.
+        // This ensures localStorage persistence isn't overwritten purely by the default API mock payload.
+        const state = useCheckoutStore.getState();
+        if (state.cartItems.length === 0) {
+            setCartData(
+                initialData.cartItems,
+                initialData.shipping_fee,
+                initialData.discount_applied
+            );
+        }
         setHydrated(true);
     }, [initialData, setCartData]);
 
@@ -56,8 +60,8 @@ export default function CheckoutFlow({ initialData }: CheckoutFlowProps) {
         <>
             {currentStep < 4 && <Header />}
 
-            <div className="flex-grow flex items-center justify-center p-4 sm:p-6 lg:p-8">
-                <div className="w-full max-w-4xl">
+            <div className="flex-grow flex items-center justify-center p-4 pb-32 sm:p-6 sm:pb-36 lg:p-8 lg:pb-36">
+                <div className="w-full max-w-4xl relative">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={currentStep}

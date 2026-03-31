@@ -3,12 +3,13 @@ import { CheckCircle, ShoppingBag, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function SuccessScreen() {
-    const { address, setCartData, setStep } = useCheckoutStore();
+    const { addresses, selectedAddressId, resetFlow } = useCheckoutStore();
+
+    const activeAddress = addresses.find(a => a.id === selectedAddressId) || addresses[0];
 
     const handleReturnHome = () => {
-        // Reset flow entirely
-        setCartData([], 0, 0);
-        setStep(1);
+        // Reset flow entirely (clears cart, but persists stored addresses)
+        resetFlow();
         // In a real app this would navigate to '/'
         window.location.reload();
     };
@@ -31,7 +32,7 @@ export default function SuccessScreen() {
             >
                 <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Order Successful!</h1>
                 <p className="text-lg text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
-                    Thank you, <span className="font-medium text-gray-900">{address?.fullName?.split(' ')[0]}</span>. Your eco-friendly products are being prepared and will be shipped to {address?.city} shortly.
+                    Thank you, <span className="font-medium text-gray-900">{activeAddress?.fullName?.split(' ')[0]}</span>. Your eco-friendly products are being prepared and will be shipped to {activeAddress?.city} shortly.
                 </p>
 
                 <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm mb-10 text-left inline-block max-w-sm w-full">

@@ -4,8 +4,11 @@ import { ArrowLeft, CreditCard, Lock, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 
 export default function PaymentScreen() {
-    const { cartItems, shipping_fee, discount_applied, address, prevStep, nextStep } = useCheckoutStore();
+    const { cartItems, shipping_fee, discount_applied, addresses, selectedAddressId, prevStep, nextStep } = useCheckoutStore();
     const [isProcessing, setIsProcessing] = useState(false);
+
+    // Compute active address
+    const activeAddress = addresses.find(a => a.id === selectedAddressId) || addresses[0];
 
     const subtotal = cartItems.reduce((acc, item) => acc + (item.product_price * item.quantity), 0);
     const total = subtotal + shipping_fee - discount_applied;
@@ -20,19 +23,11 @@ export default function PaymentScreen() {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8 mb-20">
             {/* Payment Details */}
             <div className="flex-grow space-y-8">
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
                     <div className="mb-6 flex items-center gap-4">
-                        <button
-                            onClick={prevStep}
-                            className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:text-gray-900 transition-colors"
-                            aria-label="Go back to Address"
-                            disabled={isProcessing}
-                        >
-                            <ArrowLeft size={18} />
-                        </button>
                         <h2 className="text-2xl font-bold text-gray-900">Payment Method</h2>
                     </div>
 
@@ -57,15 +52,17 @@ export default function PaymentScreen() {
                 </div>
 
                 {/* Shipping Summary block */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
-                    <h3 className="font-bold text-gray-900 mb-4">Shipping To</h3>
-                    <div className="text-gray-600 text-sm space-y-1">
-                        <p className="font-medium text-gray-900">{address?.fullName}</p>
-                        <p>{address?.phone}</p>
-                        <p>{address?.email}</p>
-                        <p className="mt-2 text-gray-500">{address?.city}, {address?.state} {address?.pinCode}</p>
+                {activeAddress && (
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+                        <h3 className="font-bold text-gray-900 mb-4">Shipping To</h3>
+                        <div className="text-gray-600 text-sm space-y-1">
+                            <p className="font-medium text-gray-900">{activeAddress.fullName}</p>
+                            <p>{activeAddress.phone}</p>
+                            <p>{activeAddress.email}</p>
+                            <p className="mt-2 text-gray-500">{activeAddress.city}, {activeAddress.state} {activeAddress.pinCode}</p>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
 
             {/* Final Order Summary */}
@@ -92,7 +89,7 @@ export default function PaymentScreen() {
 
                     <div className="h-px bg-gray-100 my-6" />
 
-                    <div className="space-y-4 text-sm mb-6">
+                    <div className="space-y-4 text-sm mb-2">
                         <div className="flex justify-between text-gray-500">
                             <span>Subtotal</span>
                             <span className="text-gray-900 font-medium">${subtotal}</span>
@@ -101,17 +98,38 @@ export default function PaymentScreen() {
                             <span>Shipping</span>
                             <span className="text-gray-900 font-medium">${shipping_fee}</span>
                         </div>
+                        {discount_applied > 0 && (
+                            <div className="flex justify-between text-emerald-600">
+                                <span>Discount</span>
+                                <span className="font-medium">-${discount_applied}</span>
+                            </div>
+                        )}
                         <div className="h-px bg-gray-100 my-4" />
                         <div className="flex justify-between text-xl font-bold text-gray-900">
                             <span>Total Pay</span>
                             <span>${total}</span>
                         </div>
                     </div>
+                </div>
+            </div>
 
+            {/* Sticky Action Footer */}
+            <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 p-4 sm:p-6 z-[60] shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)]">
+                <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
+                    <button
+                        onClick={prevStep}
+                        disabled={isProcessing}
+                        className="h-14 px-6 sm:px-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:bg-gray-200 disabled:opacity-50 transition-colors font-semibold"
+                        aria-label="Go back to Address"
+                    >
+                        <ArrowLeft size={20} className="sm:mr-2" />
+                        <span className="hidden sm:inline">Back</span>
+                    </button>
+                    
                     <button
                         onClick={handlePayment}
                         disabled={isProcessing}
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white py-4 rounded-xl font-semibold shadow-sm shadow-emerald-200 transition-all flex items-center justify-center gap-3 relative overflow-hidden"
+                        className="flex-grow sm:flex-grow-0 sm:w-72 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white px-8 py-4 rounded-xl font-bold shadow-md shadow-emerald-200 transition-all flex items-center justify-center gap-3 relative overflow-hidden text-lg"
                     >
                         {isProcessing ? (
                             <>
