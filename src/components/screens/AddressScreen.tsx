@@ -9,6 +9,8 @@ const formSchema = z.object({
     fullName: z.string().min(2, 'Full name is required'),
     email: z.string().email('Invalid email address'),
     phone: z.string().regex(/^\d{10}$/, 'Must be a valid 10-digit phone number'),
+    houseNumber: z.string().min(1, 'House/Flat No. is required'),
+    exactLocation: z.string().min(5, 'Location details are required'),
     pinCode: z.string().regex(/^\d{6}$/, 'Must be a valid 6-digit PIN code'),
     city: z.string().min(2, 'City is required'),
     state: z.string().min(2, 'State is required'),
@@ -28,6 +30,8 @@ export default function AddressScreen() {
             fullName: '',
             email: '',
             phone: '',
+            houseNumber: '',
+            exactLocation: '',
             pinCode: '',
             city: '',
             state: ''
@@ -94,6 +98,7 @@ export default function AddressScreen() {
                                     </div>
                                     <div className="text-gray-600 text-sm space-y-1">
                                         <p>{addr.phone} • {addr.email}</p>
+                                        <p>{addr.houseNumber}, {addr.exactLocation}</p>
                                         <p>{addr.city}, {addr.state} {addr.pinCode}</p>
                                     </div>
                                 </div>
@@ -160,6 +165,26 @@ export default function AddressScreen() {
                                     placeholder="9876543210"
                                 />
                                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">House No. / Flat No.</label>
+                                <input
+                                    {...register('houseNumber')}
+                                    className={`w-full px-4 py-3 rounded-xl border ${errors.houseNumber ? 'border-red-500 outline-red-500' : 'border-gray-200 outline-emerald-500'} bg-gray-50/50 focus:bg-white transition-colors`}
+                                    placeholder="Flat 201, Maple Heights"
+                                />
+                                {errors.houseNumber && <p className="text-red-500 text-xs mt-1">{errors.houseNumber.message}</p>}
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">Exact Location / Street</label>
+                                <input
+                                    {...register('exactLocation')}
+                                    className={`w-full px-4 py-3 rounded-xl border ${errors.exactLocation ? 'border-red-500 outline-red-500' : 'border-gray-200 outline-emerald-500'} bg-gray-50/50 focus:bg-white transition-colors`}
+                                    placeholder="12th Main Road, Indiranagar"
+                                />
+                                {errors.exactLocation && <p className="text-red-500 text-xs mt-1">{errors.exactLocation.message}</p>}
                             </div>
 
                             <div className="space-y-2">

@@ -59,7 +59,8 @@ export default function PaymentScreen() {
                             <p className="font-medium text-gray-900">{activeAddress.fullName}</p>
                             <p>{activeAddress.phone}</p>
                             <p>{activeAddress.email}</p>
-                            <p className="mt-2 text-gray-500">{activeAddress.city}, {activeAddress.state} {activeAddress.pinCode}</p>
+                            <p className="mt-2 text-gray-500">{activeAddress.houseNumber}, {activeAddress.exactLocation}</p>
+                            <p className="text-gray-500">{activeAddress.city}, {activeAddress.state} {activeAddress.pinCode}</p>
                         </div>
                     </div>
                 )}

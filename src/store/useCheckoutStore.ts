@@ -14,6 +14,8 @@ export type Address = {
     fullName: string;
     email: string;
     phone: string;
+    houseNumber: string;
+    exactLocation: string;
     pinCode: string;
     city: string;
     state: string;
