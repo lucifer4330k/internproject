@@ -15,7 +15,7 @@ export async function GET() {
                 product_name: "Reusable Cotton Produce Bags",
                 product_price: 450,
                 quantity: 1,
-                image: "https://images.unsplash.com/photo-1610419993549-743fb3f478a8?auto=format&fit=crop&q=80&w=300&h=300"
+                image: "https://images.unsplash.com/photo-1590779033100-9f60a05a013d?auto=format&fit=crop&q=80&w=300&h=300"
             }
         ],
         shipping_fee: 50,
